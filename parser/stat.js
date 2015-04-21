@@ -11,8 +11,8 @@ var answerSource='correctAnswer_json.txt';
 var page='&page=';
 var url='http://bbs.ngacn.cc/read.php?tid=8055345&lite=js';
 
-var startPage=4;//pages range
-var endPage=4;
+var startPage=1;//pages range
+var endPage=13;
 var asynchroFlag=0;//finish flag,==page num means finish
 
 var min_answerN=20;//filter answer
@@ -74,7 +74,6 @@ fs.readFile(answerSource,'utf-8',function(err,data){
 			            			                            .replace(/\[del\].*\[\/del\]/g,'')//rule3: replace del
 			            			                            .replace(/\(.*\)/g,'')//rule4: replace brackets
 			            			                            .replace(/[?？.。、,，\s]*$/,''); //rule5: replace suffix blanks,dots.
-			            			          
 			            			asN++;
 			            			//console.log(cutsheet[j]+' Y');
 			            		}
@@ -85,10 +84,12 @@ fs.readFile(answerSource,'utf-8',function(err,data){
 			            	if(asN<min_answerN||asN>max_answerN)//filter answer
 			            		continue;
 			            	
+
 			            	//step E analyse
 			            	var correctN=0;
-			            	for(var j=0;j<asN;j++){//do sth. check correct rate
+			            	for(var j=0;j<answersheet.length;j++){//do sth. check correct rate
 			            		console.log(answersheet[j]+' '+(correctAnswer[j][answersheet[j]]==undefined?'false':'true'));
+			            		if(answersheet[j]==undefined)answerSource[j]="";
 			            		if(correctAnswer[j][answersheet[j]]==undefined)
 			            			continue;
 			            		else {

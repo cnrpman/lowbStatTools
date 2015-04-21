@@ -57,6 +57,7 @@ fs.readFile(cookieSource,'utf-8',function(err,data){
 	            	var content=jobj.data.__R[i].content.replace(/&nbsp;/g, ' ');//tran spacing
 	            	var cutsheet=content.split("<br/>");
 	            	var answersheet=[];
+
 	            	var asN=0;
 	            	for(var j=0;j<cutsheet.length;j++){//cut into answer
 	            		if(cutsheet[j]==undefined)continue;
@@ -68,14 +69,14 @@ fs.readFile(cookieSource,'utf-8',function(err,data){
 	            			                            .replace(/\[del\].*\[\/del\]/g,'')//rule3: replace del
 	            			                            .replace(/\(.*\)/g,'')//rule4: replace brackets
 	            			                            .replace(/[?？.。、,，\s]*$/,''); //rule5: replace suffix blanks,dots.
-	            			          
 	            			asN++;
 	            		}
 	            	}
-	            	if(asN<min_answerN||asN>max_answerN)//filter answer
+	            	if(asN<min_answerN||asN.length>max_answerN)//filter answer
 	            		continue;
 	            	console.log(answersheet);
-	            	for(var j=0;j<asN;j++){
+	            	for(var j=0;j<answersheet.length;j++){
+	            		if(answersheet[j]==undefined)answersheet[j]="";
 	            		if(allAnswers[j][answersheet[j]]==undefined)
 	            			allAnswers[j][answersheet[j]]=1;
 	            		else allAnswers[j][answersheet[j]]++;
