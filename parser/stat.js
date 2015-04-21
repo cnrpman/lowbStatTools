@@ -11,8 +11,8 @@ var answerSource='correctAnswer_json.txt';
 var page='&page=';
 var url='http://bbs.ngacn.cc/read.php?tid=8055345&lite=js';
 
-var startPage=1;//pages range
-var endPage=13;
+var startPage=4;//pages range
+var endPage=4;
 var asynchroFlag=0;//finish flag,==page num means finish
 
 var min_answerN=20;//filter answer
@@ -67,7 +67,9 @@ fs.readFile(answerSource,'utf-8',function(err,data){
 			            	for(var j=0;j<cutsheet.length;j++){//cut into answer,for each answer line
 			            		if(cutsheet[j]==undefined)continue;
 			            		if(cutsheet[j].match(/^\s*\d+[,，.、。:：\s]*/)){//match prefix of nn.xxx,is an answer line
-			            			answersheet[asN]=cutsheet[j].replace(/^\s*\d+[,，.、。:：\s]*/,'')//rule1: replace the order number 
+			            			var seq=/^\s*(\d+)/.exec(cutsheet[j])[1]-1;
+			            			if(seq>=max_answerN)continue;
+			            			answersheet[seq]=cutsheet[j].replace(/^\s*\d+[,，.、。:：\s]*/,'')//rule1: replace the order number 
 			            			                            .replace(/\s{4,}.*/,'')//rule2: replace annotation(words after 3 blanks)
 			            			                            .replace(/\[del\].*\[\/del\]/g,'')//rule3: replace del
 			            			                            .replace(/\(.*\)/g,'')//rule4: replace brackets

@@ -47,7 +47,7 @@ fs.readFile(cookieSource,'utf-8',function(err,data){
 	            //step C: cut
 	            //console.log("this visit rows: "+jobj.data.__T.this_visit_rows);
 	            //console.log("pages num: "+Math.floor((jobj.data.__T.this_visit_rows-1)/jobj.data.__R__ROWS_PAGE));
-	            console.log("pages rows: "+jobj.data.__R__ROWS);
+	            //console.log("pages rows: "+jobj.data.__R__ROWS);
 
 	            var tidN=jobj.data.__R__ROWS;
 	            for(var i=0;i<tidN;i++){//for each tread
@@ -61,11 +61,13 @@ fs.readFile(cookieSource,'utf-8',function(err,data){
 	            	for(var j=0;j<cutsheet.length;j++){//cut into answer
 	            		if(cutsheet[j]==undefined)continue;
 	            		if(cutsheet[j].match(/^\s*\d+[,，.、。:：\s]*/)){//match prefix of nn.xxx,is an answer line
-	            			answersheet[asN]=cutsheet[j].replace(/^\s*\d+[,，.、。:：\s]*/,'')//rule1: replace the order number 
+	            			var seq=/^\s*(\d+)/.exec(cutsheet[j])[1]-1;
+			            	if(seq>=max_answerN)continue;
+	            			answersheet[seq]=cutsheet[j].replace(/^\s*\d+[,，.、。:：\s]*/,'')//rule1: replace the order number 
 	            			                            .replace(/\s{4,}.*/,'')//rule2: replace annotation(words after 3 blanks)
 	            			                            .replace(/\[del\].*\[\/del\]/g,'')//rule3: replace del
 	            			                            .replace(/\(.*\)/g,'')//rule4: replace brackets
-	            			                            .replace(/[.。、,，\s]*$/,''); //rule5: replace suffix blanks,dots.
+	            			                            .replace(/[?？.。、,，\s]*$/,''); //rule5: replace suffix blanks,dots.
 	            			          
 	            			asN++;
 	            		}
